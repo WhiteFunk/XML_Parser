@@ -29,65 +29,61 @@ int ends_with(const char* haystack, const char* needle)
     return TRUE;
 }
 
-struct _XMLAttribute
+struct XML_Attribute
 {
     char* key;
     char* value;
 };
-typedef struct _XMLAttribute XMLAttribute;
 
-void XMLAttribute_free(XMLAttribute* attr);
+void XML_Attribute_free(XML_Attribute* attr);
 
-struct _XMLAttributeList
+struct XML_AttributeList
 {
     int heap_size;
     int size;
-    XMLAttribute* data;
+    XML_Attribute* data;
 };
-typedef struct _XMLAttributeList XMLAttributeList;
 
-void XMLAttributeList_init(XMLAttributeList* list);
-void XMLAttributeList_add(XMLAttributeList* list, XMLAttribute* attr);
+void XML_AttributeList_init(XML_AttributeList* list);
+void XML_AttributeList_add(XML_AttributeList* list, XML_Attribute* attr);
 
-struct _XMLNodeList
+struct XML_NodeList
 {
     int heap_size;
     int size;
-    struct _XMLNode** data;
+    struct XML_Node** data;
 };
-typedef struct _XMLNodeList XMLNodeList;
 
-void XMLNodeList_init(XMLNodeList* list);
-void XMLNodeList_add(XMLNodeList* list, struct _XMLNode* node);
-struct _XMLNode* XMLNodeList_at(XMLNodeList* list, int index);
-void XMLNodeList_free(XMLNodeList* list);
+void XML_NodeList_init(XML_NodeList* list);
+void XML_NodeList_add(XML_NodeList* list, struct XML_Node* node);
+struct XML_Node* XML_NodeList_at(XML_NodeList* list, int index);
+void XML_NodeList_free(XML_NodeList* list);
 
-struct _XMLNode
+struct XML_Node
 {
     char* tag;
     char* inner_text;
-    struct _XMLNode* parent;
-    XMLAttributeList attributes;
-    XMLNodeList children;
+    struct XML_Node* parent;
+    XML_AttributeList attributes;
+    XML_NodeList children;
 };
-typedef struct _XMLNode XMLNode;
 
-XMLNode* XMLNode_new(XMLNode* parent);
-void XMLNode_free(XMLNode* node);
-XMLNode* XMLNode_child(XMLNode* parent, int index);
-XMLNodeList* XMLNode_children(XMLNode* parent, const char* tag);
-char* XMLNode_attr_val(XMLNode* node, char* key);
-XMLAttribute* XMLNode_attr(XMLNode* node, char* key);
+XML_Node* XML_Node_new(XML_Node* parent);
+void XML_Node_free(XML_Node* node);
+XML_Node* XML_Node_child(XML_Node* parent, int index);
+XML_NodeList* XML_Node_children(XML_Node* parent, const char* tag);
+char* XML_Node_attr_val(XML_Node* node,const char* key);
+XML_Attribute* XML_Node_attr(XML_Node* node,const char* key);
 
 struct _XMLDocument
 {
-    XMLNode* root;
+    XML_Node* root;
     char* version;
     char* encoding;
 };
 typedef struct _XMLDocument XMLDocument;
 
-int XMLDocument_load(XMLDocument* doc, const char* path);
-int XMLDocument_write(XMLDocument* doc, const char* path, int indent);
-void XMLDocument_free(XMLDocument* doc);
+int XML_Document_load(XMLDocument* doc, const char* path);
+int XML_Document_write(XMLDocument* doc, const char* path, int indent);
+void XML_Document_free(XMLDocument* doc);
 
